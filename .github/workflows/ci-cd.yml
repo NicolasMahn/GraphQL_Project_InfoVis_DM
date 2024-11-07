@@ -43,5 +43,5 @@ jobs:
 
       - name: Push Docker image to Docker Hub
         run: |
-          docker push yourusername/graphql-server:latest
-          docker push yourusername/graphql-server:${{ github.sha }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/graphql-server:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/graphql-server:${{ github.sha }}

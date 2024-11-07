@@ -10,3 +10,6 @@ mongodb_name = os.getenv("MONGODB_NAME")
 
 MONGO_URI = f"mongodb://{username}:{password}@{aws_dns}:{mongodb_port}"
 MONGO_DB_NAME = mongodb_name
+
+SERVER_PORT = os.getenv("SERVER_PORT")
+DEBUG_MODE = os.getenv("DEBUG_MODE")

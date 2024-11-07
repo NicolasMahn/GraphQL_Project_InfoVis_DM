@@ -33,6 +33,8 @@ jobs:
           AWS_DNS: ${{ secrets.AWS_DNS }}
           MONGODB_PORT: ${{ secrets.MONGODB_PORT }}
           MONGODB_NAME: ${{ secrets.MONGODB_NAME }}
+          GRAPHQL_SERVER_PORT: ${{ secrets.GRAPHQL_SERVER_PORT }}
+          DEBUG_MODE: ${{ secrets.DEBUG_MODE }}
         run: pytest  # Run the pytest tests
 
   build-and-push-docker:
@@ -52,6 +54,8 @@ jobs:
           AWS_DNS: ${{ secrets.AWS_DNS }}
           MONGODB_PORT: ${{ secrets.MONGODB_PORT }}
           MONGODB_NAME: ${{ secrets.MONGODB_NAME }}
+          GRAPHQL_SERVER_PORT: ${{ secrets.GRAPHQL_SERVER_PORT }}
+          DEBUG_MODE: ${{ secrets.DEBUG_MODE }}
         run: |
           # Build the Docker image
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/graphql-server:latest .

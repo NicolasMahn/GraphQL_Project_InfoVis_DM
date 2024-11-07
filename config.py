@@ -1,10 +1,12 @@
+import os
 from urllib.parse import quote_plus
-import s
 
 # MongoDB connection details
-MONGO_URI = f"mongodb://{quote_plus(s.mongodb_username)}:{quote_plus(s.mongodb_password)}@{s.aws_dns}:{s.mongodb_port}"
-MONGO_DB_NAME = s.mongodb_name
+username = quote_plus(os.getenv("MONGODB_USERNAME"))
+password = quote_plus(os.getenv("MONGODB_PASSWORD"))
+aws_dns = os.getenv("AWS_DNS")
+mongodb_port = os.getenv("MONGODB_PORT")
+mongodb_name = os.getenv("MONGODB_NAME")
 
-# Flask server configuration
-SERVER_PORT = 5000
-DEBUG_MODE = True
+MONGO_URI = f"mongodb://{username}:{password}@{aws_dns}:{mongodb_port}"
+MONGO_DB_NAME = mongodb_name

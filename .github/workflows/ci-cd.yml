@@ -1,0 +1,50 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Triggers workflow when changes are pushed to the main branch
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: pytest  # Assumes you have tests set up
+
+  build-and-push-docker:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Build and tag Docker image
+        run: |
+          docker build -t yourusername/graphql-server:latest .
+          docker tag yourusername/graphql-server:latest yourusername/graphql-server:${{ github.sha }}
+
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker push yourusername/graphql-server:latest
+          docker push yourusername/graphql-server:${{ github.sha }}

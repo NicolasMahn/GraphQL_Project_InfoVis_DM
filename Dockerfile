@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expose the port that the Flask app runs on
-EXPOSE ${SERVER_PORT}
+EXPOSE ${GRAPHQL_SERVER_PORT}
 
 # Set environment variables for MongoDB connection from Docker environment
 ENV MONGODB_USERNAME=${MONGODB_USERNAME}

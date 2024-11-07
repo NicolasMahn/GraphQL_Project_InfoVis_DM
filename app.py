@@ -20,4 +20,4 @@ def index():
     return jsonify({"message": "Welcome to the GraphQL API of the InvoVis & DM project!"})
 
 if __name__ == "__main__":
-    app.run(port=SERVER_PORT, debug=DEBUG_MODE)
+    app.run(port=GRAPHQL_SERVER_PORT, debug=DEBUG_MODE)

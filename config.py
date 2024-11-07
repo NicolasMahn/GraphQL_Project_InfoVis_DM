@@ -2,8 +2,8 @@ import os
 from urllib.parse import quote_plus
 
 # MongoDB connection details
-username = quote_plus(os.getenv("MONGODB_USERNAME").encode('utf-8'))
-password = quote_plus(os.getenv("MONGODB_PASSWORD").encode('utf-8'))
+username = quote_plus(os.getenv("MONGODB_USERNAME"))
+password = quote_plus(os.getenv("MONGODB_PASSWORD"))
 aws_dns = os.getenv("AWS_DNS")
 mongodb_port = os.getenv("MONGODB_PORT")
 mongodb_name = os.getenv("MONGODB_NAME")

@@ -1,7 +1,7 @@
 from flask_graphql import GraphQLView
 from flask import Flask, jsonify
 
-from config import SERVER_PORT, DEBUG_MODE
+from config import GRAPHQL_SERVER_PORT, DEBUG_MODE
 from graph.schema import schema
 
 app = Flask(__name__)

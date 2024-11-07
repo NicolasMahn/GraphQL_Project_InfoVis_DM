@@ -37,11 +37,21 @@ jobs:
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       - name: Build and tag Docker image
+        env:
+          MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+          MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+          AWS_DNS: ${{ secrets.AWS_DNS }}
+          MONGODB_PORT: ${{ secrets.MONGODB_PORT }}
+          MONGODB_NAME: ${{ secrets.MONGODB_NAME }}
         run: |
-          docker build -t yourusername/graphql-server:latest .
-          docker tag yourusername/graphql-server:latest yourusername/graphql-server:${{ github.sha }}
+          # Build the Docker image
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/graphql-server:latest .
+    
+          # Also tag the image with the Git SHA for versioning
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/graphql-server:latest ${{ secrets.DOCKERHUB_USERNAME }}/graphql-server:${{ github.sha }}
 
       - name: Push Docker image to Docker Hub
         run: |
+          # Push both tags to Docker Hub
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/graphql-server:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/graphql-server:${{ github.sha }}

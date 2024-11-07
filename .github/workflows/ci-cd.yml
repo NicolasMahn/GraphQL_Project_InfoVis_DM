@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,7 +27,7 @@ jobs:
           pip install -r requirements.txt
 
   build-and-push-docker:
-    needs: build-and-test
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

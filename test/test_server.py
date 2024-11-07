@@ -34,7 +34,7 @@ def test_graphql_endpoint(client):
     assert "people" in data["data"], "Response missing 'people' field"
 
     # Additional optional checks (e.g., checking for specific names)
-    print("Response from test:", data)
+    print("Response from GraphQL Server:", data)
 
     people = data["data"]["people"]
     assert isinstance(people, list), "Expected 'people' to be a list"

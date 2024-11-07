@@ -27,6 +27,12 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run tests
+        env:
+          MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+          MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+          AWS_DNS: ${{ secrets.AWS_DNS }}
+          MONGODB_PORT: ${{ secrets.MONGODB_PORT }}
+          MONGODB_NAME: ${{ secrets.MONGODB_NAME }}
         run: pytest  # Run the pytest tests
 
   build-and-push-docker:

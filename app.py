@@ -1,8 +1,9 @@
 from flask_graphql import GraphQLView
 from flask import Flask, jsonify
 
-from config import GRAPHQL_SERVER_PORT, DEBUG_MODE
+from config import GRAPHQL_SERVER_PORT
 from graph.schema import schema
+
 
 app = Flask(__name__)
 
@@ -20,4 +21,4 @@ def index():
     return jsonify({"message": "Welcome to the GraphQL API of the InvoVis & DM project!"})
 
 if __name__ == "__main__":
-    app.run(port=GRAPHQL_SERVER_PORT, debug=DEBUG_MODE)
+    app.run(port=GRAPHQL_SERVER_PORT)

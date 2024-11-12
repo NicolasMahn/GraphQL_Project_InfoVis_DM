@@ -1,6 +1,9 @@
 import os
 from urllib.parse import quote_plus
 
+
+
+
 # MongoDB connection details
 username = quote_plus(os.getenv("MONGODB_USERNAME"))
 password = quote_plus(os.getenv("MONGODB_PASSWORD"))
@@ -12,4 +15,3 @@ MONGO_URI = f"mongodb://{username}:{password}@{aws_dns}:{mongodb_port}"
 MONGO_DB_NAME = mongodb_name
 
 GRAPHQL_SERVER_PORT = os.getenv("GRAPHQL_SERVER_PORT")
-DEBUG_MODE = os.getenv("DEBUG_MODE")

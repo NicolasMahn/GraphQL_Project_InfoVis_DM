@@ -47,13 +47,6 @@ jobs:
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       - name: Build and tag Docker image
-        env:
-          MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
-          MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
-          AWS_DNS: localhost
-          MONGODB_PORT: ${{ secrets.MONGODB_PORT }}
-          MONGODB_NAME: ${{ secrets.MONGODB_NAME }}
-          GRAPHQL_SERVER_PORT: ${{ secrets.GRAPHQL_SERVER_PORT }}
         run: |
           # Build the Docker image
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/graphql-server:latest .

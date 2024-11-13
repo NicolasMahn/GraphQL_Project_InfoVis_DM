@@ -8,7 +8,7 @@ from graph.schema import schema
 
 app = Flask(__name__)
 
-CORS(app, origins=["http://localhost:3000", AWS_DNS],
+CORS(app, origins=["http://localhost:3000", f"http://{AWS_DNS}"],
      methods=["GET", "POST", "OPTIONS"],
      allow_headers=["Content-Type", "Authorization"])
 
@@ -18,7 +18,8 @@ app.add_url_rule(
         'graphql',
         schema=schema,
         graphiql=True  # Enables GraphiQL UI for testing
-    )
+    ),
+    methods=["POST"]
 )
 
 @app.route('/')

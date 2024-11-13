@@ -2,13 +2,13 @@ from flask_graphql import GraphQLView
 from flask import Flask, jsonify
 from flask_cors import CORS
 
-from config import GRAPHQL_SERVER_PORT
+from config import GRAPHQL_SERVER_PORT, AWS_DNS
 from graph.schema import schema
 
 
 app = Flask(__name__)
 
-CORS(app, origins=["http://localhost:3000", "https://your-frontend-domain.com"])
+CORS(app, origins=["http://localhost:3000", AWS_DNS])
 
 app.add_url_rule(
     '/graphql',

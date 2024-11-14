@@ -3,14 +3,17 @@ from graph.types import PersonType, NumbPurchasesPerLocation
 from db.mongo import find_one, find_all
 
 class Query(ObjectType):
-    numb_purchases_per_location = List(NumbPurchasesPerLocation)
+    numb_purchases_per_location = List(NumbPurchasesPerLocation, location=String())
 
     # Test Data
     person = Field(PersonType, name=String(required=True))
     people = List(PersonType)
 
-    def resolve_numb_purchases_per_location(self, info):
-        purchases_data = find_all("num_purchases_per_location")
+    def resolve_numb_purchases_per_location(self, info, location=None):
+        if location:
+            purchases_data = find_all("num_purchases_per_location", {"location": location})
+        else:
+            purchases_data = find_all("num_purchases_per_location")
         return [
             NumbPurchasesPerLocation(
                 location=purchase["location"],

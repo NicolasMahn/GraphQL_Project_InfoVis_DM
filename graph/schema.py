@@ -11,7 +11,7 @@ class Query(ObjectType):
 
     def resolve_numb_purchases_per_location(self, info, location=None):
         if location:
-            purchases_data = find_all("num_purchases_per_location", {"location": location})
+            purchases_data = find_one("num_purchases_per_location", {"location": location})
         else:
             purchases_data = find_all("num_purchases_per_location")
         return [

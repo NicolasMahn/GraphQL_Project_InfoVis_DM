@@ -1,17 +1,17 @@
 from graphene import ObjectType, Field, List, Schema, String
 from graph.types import PersonType, NumbPurchasesPerLocation
-from db.mongo import find_one, find_all
+from db.mongo import find_one, find_all, find
 
 class Query(ObjectType):
-    numb_purchases_per_location = List(NumbPurchasesPerLocation, location=String())
+    numb_purchases_per_location = List(NumbPurchasesPerLocation, location=List(String))
 
     # Test Data
     person = Field(PersonType, name=String(required=True))
     people = List(PersonType)
 
-    def resolve_numb_purchases_per_location(self, info, location=None):
-        if location:
-            purchases_data = find_one("num_purchases_per_location", {"location": location})
+    def resolve_numb_purchases_per_location(self, info, locations=None):
+        if locations:
+            purchases_data = find("num_purchases_per_location", {"location": {"$in": locations}})
         else:
             purchases_data = find_all("num_purchases_per_location")
         return [

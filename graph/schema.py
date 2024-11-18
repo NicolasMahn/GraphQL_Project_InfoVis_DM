@@ -4,7 +4,7 @@ from db.mongo import find_one, find_all, find
 
 class Query(ObjectType):
     numb_purchases_per_location = List(NumbPurchasesPerLocation, locations=List(String))
-    location_comparing_purchases_of_pairs = List(ComparingPurchasesOfPairs, locations=List(String))
+    comparingPurchasesOfPairs = List(ComparingPurchasesOfPairs, locations=List(String))
 
     # Test Data
     person = Field(PersonType, name=String(required=True))

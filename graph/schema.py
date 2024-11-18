@@ -1,10 +1,11 @@
 from graphene import ObjectType, Field, List, Schema, String
+import logging
 from graph.types import *
 from db.mongo import find_one, find_all, find
 
 class Query(ObjectType):
     numb_purchases_per_location = List(NumbPurchasesPerLocation, locations=List(String))
-    comparingPurchasesOfPairs = List(ComparingPurchasesOfPairs, locations=List(String))
+    comparing_purchases_of_pairs = List(ComparingPurchasesOfPairs, locations=List(String))
 
     # Test Data
     person = Field(PersonType, name=String(required=True))
@@ -29,17 +30,6 @@ class Query(ObjectType):
                                   {"location": {"$in": locations}})
         else:
             purchases_data = find_all("comparing_purchases_of_pairs")
-
-        # Debug print to check the fetched data
-        print("Fetched purchases data:", purchases_data)
-
-        if not purchases_data:
-            return [ComparingPurchasesOfPairs(location="No data", absolut_card_pair=0, absolut_car_card_pair=0,
-                                              absolut_no_car_card_pair=0, absolut_no_pair=0, percent_card_pair=0.0,
-                                              percent_car_card_pair=0.0, percent_no_car_card_pair=0.0,
-                                              percent_no_pair=0.0, avg_amount_card_pair=0.0,
-                                              avg_amount_car_card_pair=0.0, avg_amount_no_car_card_pair=0.0,
-                                              avg_amount_no_pair=0.0)]
 
         return [
             ComparingPurchasesOfPairs(

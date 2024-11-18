@@ -34,7 +34,12 @@ class Query(ObjectType):
         print("Fetched purchases data:", purchases_data)
 
         if not purchases_data:
-            return ["Really no data found"]
+            return [ComparingPurchasesOfPairs(location="No data", absolut_card_pair=0, absolut_car_card_pair=0,
+                                              absolut_no_car_card_pair=0, absolut_no_pair=0, percent_card_pair=0.0,
+                                              percent_car_card_pair=0.0, percent_no_car_card_pair=0.0,
+                                              percent_no_pair=0.0, avg_amount_card_pair=0.0,
+                                              avg_amount_car_card_pair=0.0, avg_amount_no_car_card_pair=0.0,
+                                              avg_amount_no_pair=0.0)]
 
         return [
             ComparingPurchasesOfPairs(

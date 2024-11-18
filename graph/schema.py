@@ -29,6 +29,13 @@ class Query(ObjectType):
                                   {"location": {"$in": locations}})
         else:
             purchases_data = find_all("comparing_purchases_of_pairs")
+
+        # Debug print to check the fetched data
+        print("Fetched purchases data:", purchases_data)
+
+        if not purchases_data:
+            return None
+
         return [
             ComparingPurchasesOfPairs(
                 location=purchase["location"],

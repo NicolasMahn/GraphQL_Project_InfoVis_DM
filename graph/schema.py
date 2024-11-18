@@ -34,7 +34,7 @@ class Query(ObjectType):
         print("Fetched purchases data:", purchases_data)
 
         if not purchases_data:
-            return None
+            return ["Really no data found"]
 
         return [
             ComparingPurchasesOfPairs(

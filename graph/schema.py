@@ -4,7 +4,7 @@ from db.mongo import find_one, find_all, find
 
 class Query(ObjectType):
     numb_purchases_per_location = List(NumbPurchasesPerLocation, locations=List(String))
-    location_comparison_cleaned_vs_sketchy = List(LocationComparisonCleanedVsSketchy, locations=List(String))
+    location_comparing_purchases_of_pairs = List(ComparingPurchasesOfPairs, locations=List(String))
 
     # Test Data
     person = Field(PersonType, name=String(required=True))
@@ -23,21 +23,27 @@ class Query(ObjectType):
             ) for purchase in purchases_data
         ]
 
-    def resolve_location_comparison_cleaned_vs_sketchy(self, info, locations=None):
+    def resolve_comparing_purchases_of_pairs(self, info, locations=None):
         if locations:
-            purchases_data = find("location_comparison_cleaned_vs_sketchy",
+            purchases_data = find("comparing_purchases_of_pairs",
                                   {"location": {"$in": locations}})
         else:
-            purchases_data = find_all("location_comparison_cleaned_vs_sketchy")
+            purchases_data = find_all("comparing_purchases_of_pairs")
         return [
-            LocationComparisonCleanedVsSketchy(
+            ComparingPurchasesOfPairs(
                 location=purchase["location"],
-                absolut_cleaned=purchase["absolut_cleaned"],
-                absolut_sketchy=purchase["absolut_sketchy"],
-                percent_cleaned=purchase["percent_cleaned"],
-                percent_sketchy=purchase["percent_sketchy"],
-                avg_amount_cleaned=purchase["avg_amount_cleaned"],
-                avg_amount_sketchy=purchase["avg_amount_sketchy"]
+                absolut_card_pair=purchase["absolut_card_pair"],
+                absolut_car_card_pair=purchase["absolut_car_card_pair"],
+                absolut_no_car_card_pair=purchase["absolut_no_car_card_pair"],
+                absolut_no_pair=purchase["absolut_no_pair"],
+                percent_card_pair=purchase["percent_card_pair"],
+                percent_car_card_pair=purchase["percent_car_card_pair"],
+                percent_no_car_card_pair=purchase["percent_no_car_card_pair"],
+                percent_no_pair=purchase["percent_no_pair"],
+                avg_amount_card_pair=purchase["avg_amount_card_pair"],
+                avg_amount_car_card_pair=purchase["avg_amount_car_card_pair"],
+                avg_amount_no_car_card_pair=purchase["avg_amount_no_car_card_pair"],
+                avg_amount_no_pair=purchase["avg_amount_no_pair"]
             ) for purchase in purchases_data
         ]
 

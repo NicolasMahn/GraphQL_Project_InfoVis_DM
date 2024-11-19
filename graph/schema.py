@@ -1,5 +1,4 @@
-from graphene import ObjectType, Field, List, Schema, String
-import logging
+from graphene import ObjectType, Field, List, Schema, String, Float
 from graph.types import *
 from db.mongo import find_one, find_all, find
 

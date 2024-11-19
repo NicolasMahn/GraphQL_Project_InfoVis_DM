@@ -58,6 +58,32 @@ class Query(ObjectType):
             ) for purchase in purchases_data
         ]
 
+    def resolve_purchases_over_time(self, info, starttime=None, endtime=None):
+        if starttime and endtime:
+            purchases_data = find("purchases_over_time", {"starttime": {"$gte": starttime},
+                                                          "endtime": {"$lte": endtime}})
+        elif starttime:
+            purchases_data = find("purchases_over_time", {"starttime": {"$gte": starttime}})
+        elif endtime:
+            purchases_data = find("purchases_over_time", {"endtime": {"$lte": endtime}})
+        else:
+            purchases_data = find_all("purchases_over_time")
+
+        return [
+            PurchasesOverTime(
+                starttime=purchase["starttime"],
+                endtime=purchase["endtime"],
+                type=purchase["type"],
+                location=purchase["location"],
+                price=purchase.get("price", None),
+                creditcard=purchase.get("creditcard", None),
+                loyalty=purchase.get("loyalty", None),
+                car_id=purchase.get("car_id", None),
+                start_coordinates=purchase.get("start_coordinates", None),
+                end_coordinates=purchase.get("end_coordinates", None)
+            ) for purchase in purchases_data
+        ]
+
     # Test Data
     def resolve_person(self, info, name):
         person_data = find_one("test", {"name": name})

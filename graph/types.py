@@ -1,4 +1,4 @@
-from graphene import ObjectType, String, Int, Float
+from graphene import ObjectType, String, Int, Float, List
 
 
 class PersonType(ObjectType):
@@ -33,3 +33,16 @@ class ComparingPurchasesOfPairs(ObjectType):
     avg_amount_car_card_pair = Float()
     avg_amount_no_car_card_pair = Float()
     avg_amount_no_pair = Float()
+
+class PurchasesOverTime(ObjectType):
+    starttime = Float()
+    endtime = Float()
+    type = String()
+    location = String()
+    price = Float()
+    creditcard = Int()
+    loyalty = String()
+    car_id = Int()
+    start_coordinates = List(String)
+    end_coordinates = List(String)
+

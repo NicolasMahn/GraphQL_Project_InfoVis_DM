@@ -5,7 +5,7 @@ from db.mongo import find_one, find_all, find
 class Query(ObjectType):
     numb_purchases_per_location = List(NumbPurchasesPerLocation, locations=List(String))
     comparing_purchases_of_pairs = List(ComparingPurchasesOfPairs, locations=List(String))
-    purchases_over_time = List(PurchasesOverTime, starttime=Float, endtime=Float)
+    purchases_over_time = List(PurchasesOverTime, starttime=Float(), endtime=Float())
 
     # Test Data
     person = Field(PersonType, name=String(required=True))
@@ -59,13 +59,39 @@ class Query(ObjectType):
         ]
 
     def resolve_purchases_over_time(self, info, starttime=None, endtime=None):
+        #endtime =   1488620799.0
+        #starttime = 1288534400.0
         if starttime and endtime:
-            purchases_data = find("purchases_over_time", {"starttime": {"$gte": starttime},
-                                                          "endtime": {"$lte": endtime}})
+            purchases_data = find("purchases_over_time",
+                                  {"$and":
+                                      [{"$or":
+                                          [
+                                              {"starttime": {"$gt": starttime}},
+                                              {"starttime": {"$eq": starttime}}
+                                          ]
+                                      },{"$or":
+                                          [
+                                              {"endtime": {"$lt": endtime}},
+                                              {"endtime": {"$eq": endtime}}
+                                          ]
+                                      }]
+                                   })
         elif starttime:
-            purchases_data = find("purchases_over_time", {"starttime": {"$gte": starttime}})
+            purchases_data = find("purchases_over_time",
+                                  {  "$or":
+                                      [
+                                        {"starttime": {"$gt": starttime}},
+                                        {"starttime": {"$eq": starttime}}
+                                      ]
+                                  })
         elif endtime:
-            purchases_data = find("purchases_over_time", {"endtime": {"$lte": endtime}})
+            purchases_data = find("purchases_over_time",
+                                  {"$or":
+                                      [
+                                          {"endtime": {"$lt": endtime}},
+                                          {"endtime": {"$eq": endtime}}
+                                      ]
+                                  })
         else:
             purchases_data = find_all("purchases_over_time")
 
@@ -79,8 +105,8 @@ class Query(ObjectType):
                 creditcard=purchase.get("creditcard", None),
                 loyalty=purchase.get("loyalty", None),
                 car_id=purchase.get("car_id", None),
-                start_coordinates=purchase.get("start_coordinates", None),
-                end_coordinates=purchase.get("end_coordinates", None)
+                start_coordinates= purchase.get("start_coordinates", None),
+                end_coordinates= purchase.get("end_coordinates", None)
             ) for purchase in purchases_data
         ]
 

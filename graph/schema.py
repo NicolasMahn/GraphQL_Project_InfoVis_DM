@@ -66,9 +66,9 @@ class Query(ObjectType):
         if types:
             query_append.append({"type": {"$in": types}})
         if starttime:
-            query_append.append({"$or": [{"$gt": starttime}, {"$eq": starttime}]})
+            query_append.append({"$or": [{"starttime": {"$gt": starttime}}, {"starttime":{"$eq": starttime}}]})
         if endtime:
-            query_append.append({"$or": [{"$lt": endtime}, {"$eq": endtime}]})
+            query_append.append({"$or": [{"endtime":{"$lt": endtime}}, {"endtime":{"$eq": endtime}}]})
 
         if len(query_append) == 1:
             purchases_data = find("purchases_over_time", query_append)

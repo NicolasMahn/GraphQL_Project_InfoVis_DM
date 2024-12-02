@@ -5,7 +5,8 @@ from db.mongo import find_one, find_all, find
 class Query(ObjectType):
     numb_purchases_per_location = List(NumbPurchasesPerLocation, locations=List(String))
     comparing_purchases_of_pairs = List(ComparingPurchasesOfPairs, locations=List(String))
-    purchases_over_time = List(PurchasesOverTime, starttime=Float(), endtime=Float(), locations=List(String), type=String)
+    purchases_over_time = List(PurchasesOverTime, starttime=Float(), endtime=Float(), locations=List(String),
+                               types=List(String))
 
     # Test Data
     person = Field(PersonType, name=String(required=True))
@@ -58,12 +59,12 @@ class Query(ObjectType):
             ) for purchase in purchases_data
         ]
 
-    def resolve_purchases_over_time(self, info, starttime=None, endtime=None, locations=None, type=None):
+    def resolve_purchases_over_time(self, info, starttime=None, endtime=None, locations=None, types=None):
         query_append = []
         if locations:
             query_append.append({"location": {"$in": locations}})
-        if type:
-            query_append.append({"type": {"$eq": type}})
+        if types:
+            query_append.append({"type": {"$in": types}})
         if starttime:
             query_append.append({"$or": [{"$gt": starttime}, {"$eq": starttime}]})
         if endtime:

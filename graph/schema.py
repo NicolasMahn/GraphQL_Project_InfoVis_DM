@@ -71,7 +71,7 @@ class Query(ObjectType):
             query_append.append({"$or": [{"endtime":{"$lt": endtime}}, {"endtime":{"$eq": endtime}}]})
 
         if len(query_append) == 1:
-            purchases_data = find("purchases_over_time", query_append)
+            purchases_data = find("purchases_over_time", query_append[0])
         elif len(query_append) > 1:
             purchases_data = find("purchases_over_time", {"$and": query_append})
         else:

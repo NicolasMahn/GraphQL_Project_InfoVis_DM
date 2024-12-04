@@ -101,8 +101,7 @@ class Query(ObjectType):
         x_axis = find_one("card_matrices", {"x_axis": {"$exists": True}})
         y_axis = find_one("card_matrices", {"y_axis": {"$exists": True}})
 
-        return [
-            CardMatrices(
+        return CardMatrices(
                 matrix=matrix_data["data"],
                 x_axis=x_axis["data"],
                 y_axis=y_axis["data"],
@@ -110,7 +109,6 @@ class Query(ObjectType):
                 x_axis_name=x_axis["x_axis"],
                 y_axis_name=y_axis["y_axis"]
             )
-        ]
 
     # Test Data
     def resolve_person(self, info, name):

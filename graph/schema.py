@@ -7,7 +7,7 @@ class Query(ObjectType):
     comparing_purchases_of_pairs = List(ComparingPurchasesOfPairs, locations=List(String))
     purchases_over_time = List(PurchasesOverTime, starttime=Float(), endtime=Float(), locations=List(String),
                                types=List(String))
-    get_card_matrices = Field(CardMatrices, matrix_type=String)
+    get_card_matrices = Field(CardMatrices, matrix_type=String())
 
     # Test Data
     person = Field(PersonType, name=String(required=True))
@@ -97,15 +97,18 @@ class Query(ObjectType):
         possible_matrix_types = ["relative_cc_matrix", "relative_loyalty_matrix", "absolute_matrix"]
         if matrix_type not in possible_matrix_types:
             matrix_type = "absolute_matrix"
-        matrix_data = find_one("card_matrices", {"matrix_type": matrix_type, "_id": 0, "data": 1})
-        x_axis = find_one("card_matrices", {"x_axis": {"$exists": True}, "_id": 0, "data": 1})
-        y_axis = find_one("card_matrices", {"y_axis": {"$exists": True}, "_id": 0, "data": 1})
+        matrix_data = find_one("card_matrices", {"matrix": matrix_type})
+        x_axis = find_one("card_matrices", {"x_axis": {"$exists": True}})
+        y_axis = find_one("card_matrices", {"y_axis": {"$exists": True}})
 
         return [
             CardMatrices(
                 matrix=matrix_data["data"],
                 x_axis=x_axis["data"],
                 y_axis=y_axis["data"],
+                matrix_type=matrix_data["matrix"],
+                x_axis_name=x_axis["x_axis"],
+                y_axis_name=y_axis["y_axis"]
             )
         ]
 

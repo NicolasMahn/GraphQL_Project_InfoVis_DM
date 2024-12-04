@@ -50,4 +50,7 @@ class CardMatrices(ObjectType):
     matrix = List(List(Int))
     x_axis = List(String)
     y_axis = List(String)
+    matrix_type = String()
+    x_axis_name = String()
+    y_axis_name = String()
 

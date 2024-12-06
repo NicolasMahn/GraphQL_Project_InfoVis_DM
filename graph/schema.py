@@ -94,7 +94,7 @@ class Query(ObjectType):
         ]
 
     def resolve_matrices(self, info, matrix_title=None, matrix_type=None):
-        if matrix_title == "Matching Cars and Loyalty Cards":
+        if matrix_title == "Matching Cars and Credit Cards":
             possible_matrix_types = ["relative_cc_matrix", "relative_car_matrix", "absolute_matrix"]
             if matrix_type not in possible_matrix_types:
                 matrix_type = "absolute_matrix"

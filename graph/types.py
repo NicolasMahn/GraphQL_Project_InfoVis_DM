@@ -47,7 +47,7 @@ class PurchasesOverTime(ObjectType):
     end_coordinates = List(String)
 
 class CardMatrices(ObjectType):
-    matrix = List(List(Int))
+    matrix = List(List(Float))
     x_axis = List(String)
     y_axis = List(String)
     matrix_type = String()

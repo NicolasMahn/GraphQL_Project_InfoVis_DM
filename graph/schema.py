@@ -7,7 +7,7 @@ class Query(ObjectType):
     comparing_purchases_of_pairs = List(ComparingPurchasesOfPairs, locations=List(String))
     purchases_over_time = List(PurchasesOverTime, starttime=Float(), endtime=Float(), locations=List(String),
                                types=List(String))
-    get_card_matrices = Field(CardMatrices, matrix_type=String())
+    matrices = Field(Matrices, matrix_title=String(), matrix_type=String())
 
     # Test Data
     person = Field(PersonType, name=String(required=True))
@@ -93,15 +93,24 @@ class Query(ObjectType):
             ) for purchase in purchases_data
         ]
 
-    def resolve_get_card_matrices(self, info, matrix_type):
-        possible_matrix_types = ["relative_cc_matrix", "relative_loyalty_matrix", "absolute_matrix"]
-        if matrix_type not in possible_matrix_types:
-            matrix_type = "absolute_matrix"
-        matrix_data = find_one("card_matrices", {"matrix": matrix_type})
-        x_axis = find_one("card_matrices", {"x_axis": {"$exists": True}})
-        y_axis = find_one("card_matrices", {"y_axis": {"$exists": True}})
+    def resolve_get_card_matrices(self, info, matrix_title=None, matrix_type=None):
+        if matrix_title == "Matching Cars and Loyalty Cards":
+            possible_matrix_types = ["relative_cc_matrix", "relative_car_matrix", "absolute_matrix"]
+            if matrix_type not in possible_matrix_types:
+                matrix_type = "absolute_matrix"
+            collection = "car_matrices"
+        else:
+            matrix_title = "Matching Credit and Loyalty Cards"
+            possible_matrix_types = ["relative_cc_matrix", "relative_loyalty_matrix", "absolute_matrix"]
+            if matrix_type not in possible_matrix_types:
+                matrix_type = "absolute_matrix"
+            collection = "card_matrices"
+        matrix_data = find_one(collection, {"matrix": matrix_type})
+        x_axis = find_one(collection, {"x_axis": {"$exists": True}})
+        y_axis = find_one(collection, {"y_axis": {"$exists": True}})
 
-        return CardMatrices(
+        return Matrices(
+                matrix_title=matrix_title,
                 matrix=matrix_data["data"],
                 x_axis=x_axis["data"],
                 y_axis=y_axis["data"],

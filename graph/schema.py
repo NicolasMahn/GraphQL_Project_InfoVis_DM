@@ -131,5 +131,4 @@ class Query(ObjectType):
         return [PersonType(name=person["name"], age=person["age"]) for person in people_data]
 
 
-
 schema = Schema(query=Query)

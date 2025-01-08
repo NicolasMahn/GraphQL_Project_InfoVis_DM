@@ -1,4 +1,4 @@
-from graphene import ObjectType, String, Int, Float, List
+from graphene import ObjectType, JSONString, String, Int, Float, List
 
 
 class PersonType(ObjectType):
@@ -45,6 +45,7 @@ class PurchasesOverTime(ObjectType):
     car_id = Int()
     start_coordinates = List(String)
     end_coordinates = List(String)
+ 
 
 class Matrices(ObjectType):
     matrix_title = String()
@@ -55,3 +56,7 @@ class Matrices(ObjectType):
     x_axis_name = String()
     y_axis_name = String()
 
+class CombinedData(ObjectType):
+    data1 = List(JSONString)
+    data2 = List(JSONString)
+    data3 = List(JSONString)

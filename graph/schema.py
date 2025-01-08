@@ -1,4 +1,4 @@
-from graphene import ObjectType, Field, List, Schema, String, Float
+from graphene import ObjectType, Field, List, Schema, String, Float, JSONString
 from graph.types import *
 from db.mongo import find_one, find_all, find
 
@@ -130,5 +130,16 @@ class Query(ObjectType):
         people_data = find_all("test")
         return [PersonType(name=person["name"], age=person["age"]) for person in people_data]
 
+    combined_data = Field(CombinedData)
 
+    def resolve_combined_data(self, info):
+        data1 = find_all("AbilaMap")
+        data2 = find_all("EmployeeCluster")
+        data3 = find_all("LocationCluster")
+
+        return CombinedData(
+            data1=[item for item in data1],
+            data2=[item for item in data2],
+            data3=[item for item in data3]
+        )
 schema = Schema(query=Query)

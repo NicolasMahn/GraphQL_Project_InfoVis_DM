@@ -9,7 +9,7 @@ class Query(ObjectType):
                                types=List(String))
     matrices = Field(Matrices, matrix_title=String(), matrix_type=String())
     feature_collection = Field(FeatureCollection)
-    location = List(Location)
+    locations = List(Location)
     employee_location_clusters = List(EmployeeLocationCluster)
     combined_data = Field(CombinedData)
 
@@ -162,9 +162,9 @@ class Query(ObjectType):
     ]
 
     
-    def resolve_location(self, info):
+    def resolve_locations(self, info):
         location_data = find_all("LocationCluster")
-
+        print(location_data)
         return [
             Location(
                 id=loc["id"],

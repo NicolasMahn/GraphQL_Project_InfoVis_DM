@@ -136,9 +136,10 @@ class Query(ObjectType):
 
 
     def resolve_feature_collection(self, info):
-        feature_collection_data = find_one("AbilaMap")
+        feature_collection_data = find_all("AbilaMap")
 
-        return FeatureCollection(
+        return [
+            FeatureCollection(
             type=feature_collection_data["type"],
             name=feature_collection_data["name"],
             crs=CRS(
@@ -158,10 +159,12 @@ class Query(ObjectType):
                 ) for feature in feature_collection_data["features"]
             ]
         )
+        ]
+
 
     
     def resolve_locations(self, info):
-        location_data = find_one("LocationCluster")
+        location_data = find_all("LocationCluster")
 
         return [
             Location(
@@ -176,7 +179,7 @@ class Query(ObjectType):
 
 
     def resolve_employee_location_clusters(self, info):
-        employee_location_cluster_data = find_one("EmployeeClusters")
+        employee_location_cluster_data = find_all("EmployeeClusters")
 
         return [
             EmployeeLocationCluster(
@@ -190,11 +193,12 @@ class Query(ObjectType):
 
     
     def resolve_combined_data(self, info):
-        feature_collection_data = find_one("AbilaMap")
-        location_data = find_one("LocationCluster")
-        employee_location_cluster_data = find_one("EmployeeCluster")
+        feature_collection_data = find_all("AbilaMap")
+        location_data = find_all("LocationCluster")
+        employee_location_cluster_data = find_all("EmployeeCluster")
 
-        return CombinedData(
+        return [
+            CombinedData(
             feature_collection=FeatureCollection(
                 type=feature_collection_data["type"],
                 name=feature_collection_data["name"],
@@ -235,5 +239,6 @@ class Query(ObjectType):
                 ) for cluster in employee_location_cluster_data
             ]
         )
+            ]
 
 schema = Schema(query=Query)

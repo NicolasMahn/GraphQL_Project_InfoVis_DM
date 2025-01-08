@@ -56,7 +56,78 @@ class Matrices(ObjectType):
     x_axis_name = String()
     y_axis_name = String()
 
+
+class EmployeeCluster(ObjectType):
+    car_id = String()
+    LastName = String()
+    FirstName = String()
+    CurrentEmploymentType = String()
+    CurrentEmploymentTitle = String()
+    start_time = String()
+    end_time = String()
+    duration_of_stop_min = Float()
+    latitude = Float()
+    longitude = Float()
+
+class EmployeeLocationCluster(ObjectType):
+    cluster_id = Int()
+    location = String()
+    employees = List(EmployeeCluster)
+
+class LocationGeometry(ObjectType):
+    type = String()
+    coordinates = List(List(List(List(Float))))
+
+class Location(ObjectType):
+    id = String()
+    name = String()
+    geometry = LocationGeometry()
+
+class CRSProperties(ObjectType):
+    name = String()
+
+class CRS(ObjectType):
+    type = String()
+    properties = Field(CRSProperties)
+
+class Geometry(ObjectType):
+    type = String()
+    coordinates = List(List(Float))
+
+class Properties(ObjectType):
+    Name = String()
+    description = String()
+    timestamp = String()
+    begin = String()
+    end = String()
+    altitudeMode = String()
+    tessellate = Int()
+    extrude = Int()
+    visibility = Int()
+    drawOrder = String()
+    icon = String()
+    TLID = Int()
+    FEDIRP = String()
+    FENAME = String()
+    FETYPE = String()
+    FEDIRS = String()
+    FRADDL = Int()
+    TOADDL = Int()
+    FRADDR = Int()
+    TOADDR = Int()
+
+class Feature(ObjectType):
+    type = String()
+    properties = Field(Properties)
+    geometry = Field(Geometry)
+
+class FeatureCollection(ObjectType):
+    type = String()
+    name = String()
+    crs = Field(CRS)
+    features = List(Feature)
+
 class CombinedData(ObjectType):
-    data1 = List(JSONString)
-    data2 = List(JSONString)
-    data3 = List(JSONString)
+    feature_collection = Field(FeatureCollection)
+    locations = List(Location)
+    employee_location_clusters = List(EmployeeLocationCluster)

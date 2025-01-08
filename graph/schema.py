@@ -1,4 +1,4 @@
-from graphene import ObjectType, Field, List, Schema, String, Float, JSONString
+from graphene import ObjectType, Field, List, Schema, String, Float
 from graph.types import *
 from db.mongo import find_one, find_all, find
 
@@ -130,16 +130,110 @@ class Query(ObjectType):
         people_data = find_all("test")
         return [PersonType(name=person["name"], age=person["age"]) for person in people_data]
 
+    feature_collection = Field(FeatureCollection)
+
+    def resolve_feature_collection(self, info):
+        feature_collection_data = find_all("AbilaMap")
+
+        return FeatureCollection(
+            type=feature_collection_data["type"],
+            name=feature_collection_data["name"],
+            crs=CRS(
+                type=feature_collection_data["crs"]["type"],
+                properties=CRSProperties(
+                    name=feature_collection_data["crs"]["properties"]["name"]
+                )
+            ),
+            features=[
+                Feature(
+                    type=feature["type"],
+                    properties=Properties(**feature["properties"]),
+                    geometry=Geometry(
+                        type=feature["geometry"]["type"],
+                        coordinates=feature["geometry"]["coordinates"]
+                    )
+                ) for feature in feature_collection_data["features"]
+            ]
+        )
+
+    locations = List(Location)
+
+    def resolve_locations(self, info):
+        location_data = find_all("LocationCluster")
+
+        return [
+            Location(
+                id=loc["id"],
+                name=loc["name"],
+                geometry=LocationGeometry(
+                    type=loc["geometry"]["type"],
+                    coordinates=loc["geometry"]["coordinates"]
+                )
+            ) for loc in location_data
+        ]
+
+    employee_location_clusters = List(EmployeeLocationCluster)
+
+    def resolve_employee_location_clusters(self, info):
+        employee_location_cluster_data = find_all("EmployeeClusters")
+
+        return [
+            EmployeeLocationCluster(
+                cluster_id=cluster["cluster_id"],
+                location=cluster["location"],
+                employees=[
+                    EmployeeCluster(**employee) for employee in cluster["employees"]
+                ]
+            ) for cluster in employee_location_cluster_data
+        ]
+
     combined_data = Field(CombinedData)
 
     def resolve_combined_data(self, info):
-        data1 = find_all("AbilaMap")
-        data2 = find_all("EmployeeCluster")
-        data3 = find_all("LocationCluster")
+        feature_collection_data = find_all("AbilaMap")
+        location_data = find_all("LocationCluster")
+        employee_location_cluster_data = find_all("EmployeeCluster")
 
         return CombinedData(
-            data1=[item for item in data1],
-            data2=[item for item in data2],
-            data3=[item for item in data3]
+            feature_collection=FeatureCollection(
+                type=feature_collection_data["type"],
+                name=feature_collection_data["name"],
+                crs=CRS(
+                    type=feature_collection_data["crs"]["type"],
+                    properties=CRSProperties(
+                        name=feature_collection_data["crs"]["properties"]["name"]
+                    )
+                ),
+                features=[
+                    Feature(
+                        type=feature["type"],
+                        properties=Properties(**feature["properties"]),
+                        geometry=Geometry(
+                            type=feature["geometry"]["type"],
+                            coordinates=feature["geometry"]["coordinates"]
+                        )
+                    ) for feature in feature_collection_data["features"]
+                ]
+            ),
+            locations=[
+                Location(
+                    id=loc["id"],
+                    name=loc["name"],
+                    geometry=LocationGeometry(
+                        type=loc["geometry"]["type"],
+                        coordinates=loc["geometry"]["coordinates"]
+                    )
+                ) for loc in location_data
+            ],
+            employee_location_clusters=[
+                EmployeeLocationCluster(
+                    cluster_id=cluster["cluster_id"],
+                    location=cluster["location"],
+                    employees=[
+                        EmployeeCluster(**employee) for employee in cluster["employees"]
+                    ]
+                ) for cluster in employee_location_cluster_data
+            ]
         )
+
 schema = Schema(query=Query)

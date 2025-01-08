@@ -1,4 +1,4 @@
-from graphene import ObjectType, JSONString, String, Int, Float, List
+from graphene import ObjectType, JSONString, String, Int, Float, List, Field
 
 
 class PersonType(ObjectType):

@@ -8,6 +8,10 @@ class Query(ObjectType):
     purchases_over_time = List(PurchasesOverTime, starttime=Float(), endtime=Float(), locations=List(String),
                                types=List(String))
     matrices = Field(Matrices, matrix_title=String(), matrix_type=String())
+    feature_collection = Field(FeatureCollection)
+    locations = List(Location)
+    employee_location_clusters = List(EmployeeLocationCluster)
+    combined_data = Field(CombinedData)
 
     # Test Data
     person = Field(PersonType, name=String(required=True))
@@ -130,7 +134,6 @@ class Query(ObjectType):
         people_data = find_all("test")
         return [PersonType(name=person["name"], age=person["age"]) for person in people_data]
 
-    feature_collection = Field(FeatureCollection)
 
     def resolve_feature_collection(self, info):
         feature_collection_data = find_all("AbilaMap")
@@ -156,8 +159,7 @@ class Query(ObjectType):
             ]
         )
 
-    locations = List(Location)
-
+    
     def resolve_locations(self, info):
         location_data = find_all("LocationCluster")
 
@@ -172,7 +174,6 @@ class Query(ObjectType):
             ) for loc in location_data
         ]
 
-    employee_location_clusters = List(EmployeeLocationCluster)
 
     def resolve_employee_location_clusters(self, info):
         employee_location_cluster_data = find_all("EmployeeClusters")
@@ -187,8 +188,7 @@ class Query(ObjectType):
             ) for cluster in employee_location_cluster_data
         ]
 
-    combined_data = Field(CombinedData)
-
+    
     def resolve_combined_data(self, info):
         feature_collection_data = find_all("AbilaMap")
         location_data = find_all("LocationCluster")

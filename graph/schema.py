@@ -8,10 +8,10 @@ class Query(ObjectType):
     purchases_over_time = List(PurchasesOverTime, starttime=Float(), endtime=Float(), locations=List(String),
                                types=List(String))
     matrices = Field(Matrices, matrix_title=String(), matrix_type=String())
-    feature_collection = Field(FeatureCollection)
+    feature_collection = List(FeatureCollection)
     locations = List(Location)
     employee_location_clusters = List(EmployeeLocationCluster)
-    combined_data = Field(CombinedData)
+    combined_data = List(CombinedData)
 
     # Test Data
     person = Field(PersonType, name=String(required=True))

@@ -8,10 +8,10 @@ class Query(ObjectType):
     purchases_over_time = List(PurchasesOverTime, starttime=Float(), endtime=Float(), locations=List(String),
                                types=List(String))
     matrices = Field(Matrices, matrix_title=String(), matrix_type=String())
-    feature_collection = List(FeatureCollection)
-    locations = List(Location)
+    feature_collection = Field(FeatureCollection)
+    location = List(Location)
     employee_location_clusters = List(EmployeeLocationCluster)
-    combined_data = List(CombinedData)
+    combined_data = Field(CombinedData)
 
     # Test Data
     person = Field(PersonType, name=String(required=True))
@@ -159,11 +159,10 @@ class Query(ObjectType):
                 ) for feature in feature_collection_data["features"]
             ]
         )
-        ]
-
+    ]
 
     
-    def resolve_locations(self, info):
+    def resolve_location(self, info):
         location_data = find_all("LocationCluster")
 
         return [
@@ -180,7 +179,6 @@ class Query(ObjectType):
 
     def resolve_employee_location_clusters(self, info):
         employee_location_cluster_data = find_all("EmployeeClusters")
-
         return [
             EmployeeLocationCluster(
                 cluster_id=cluster["cluster_id"],
@@ -197,8 +195,7 @@ class Query(ObjectType):
         location_data = find_all("LocationCluster")
         employee_location_cluster_data = find_all("EmployeeCluster")
 
-        return [
-            CombinedData(
+        return CombinedData(
             feature_collection=FeatureCollection(
                 type=feature_collection_data["type"],
                 name=feature_collection_data["name"],
@@ -239,6 +236,5 @@ class Query(ObjectType):
                 ) for cluster in employee_location_cluster_data
             ]
         )
-            ]
 
 schema = Schema(query=Query)

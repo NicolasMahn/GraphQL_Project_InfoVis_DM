@@ -136,7 +136,7 @@ class Query(ObjectType):
 
 
     def resolve_feature_collection(self, info):
-        feature_collection_data = find_all("AbilaMap")
+        feature_collection_data = find_one("AbilaMap")
 
         return FeatureCollection(
             type=feature_collection_data["type"],
@@ -161,7 +161,7 @@ class Query(ObjectType):
 
     
     def resolve_locations(self, info):
-        location_data = find_all("LocationCluster")
+        location_data = find_one("LocationCluster")
 
         return [
             Location(
@@ -176,7 +176,7 @@ class Query(ObjectType):
 
 
     def resolve_employee_location_clusters(self, info):
-        employee_location_cluster_data = find_all("EmployeeClusters")
+        employee_location_cluster_data = find_one("EmployeeClusters")
 
         return [
             EmployeeLocationCluster(
@@ -190,9 +190,9 @@ class Query(ObjectType):
 
     
     def resolve_combined_data(self, info):
-        feature_collection_data = find_all("AbilaMap")
-        location_data = find_all("LocationCluster")
-        employee_location_cluster_data = find_all("EmployeeCluster")
+        feature_collection_data = find_one("AbilaMap")
+        location_data = find_one("LocationCluster")
+        employee_location_cluster_data = find_one("EmployeeCluster")
 
         return CombinedData(
             feature_collection=FeatureCollection(
